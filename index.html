@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Эко Монополия</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="game-info">
+            <div class="players-panel">
+                <div class="player player1">
+                    <h3>Игрок 1</h3>
+                    <p>Деньги: <span class="money">1500</span>₽</p>
+                    <div class="player-token" style="background-color: #ff0000"></div>
+                </div>
+                <div class="player player2">
+                    <h3>Игрок 2</h3>
+                    <p>Деньги: <span class="money">1500</span>₽</p>
+                    <div class="player-token" style="background-color: #0000ff"></div>
+                </div>
+            </div>
+            <div class="dice-panel">
+                <div class="dice" id="dice1">1</div>
+                <div class="dice" id="dice2">1</div>
+                <button id="rollDice">Бросить кубики</button>
+            </div>
+            <div class="status-panel">
+                <p>Ход игрока: <span id="currentPlayer">Игрок 1</span></p>
+                <p>Действие: <span id="lastAction">Игра началась</span></p>
+            </div>
+        </div>
+
+        <div class="board">
+            <div class="board-row top">
+                <div class="cell corner" id="cell-20">Парковка</div>
+                <div class="cell" id="cell-21">Город 1</div>
+                <div class="cell" id="cell-22">Шанс</div>
+                <div class="cell" id="cell-23">Город 2</div>
+                <div class="cell" id="cell-24">Город 3</div>
+                <div class="cell" id="cell-25">Вокзал</div>
+                <div class="cell" id="cell-26">Город 4</div>
+                <div class="cell" id="cell-27">Город 5</div>
+                <div class="cell" id="cell-28">Вода</div>
+                <div class="cell" id="cell-29">Город 6</div>
+                <div class="cell corner" id="cell-30">Тюрьма</div>
+            </div>
+
+            <div class="board-middle">
+                <div class="board-row left">
+                    <div class="cell" id="cell-19">Город 19</div>
+                    <div class="cell" id="cell-18">Город 18</div>
+                    <div class="cell" id="cell-17">Казна</div>
+                    <div class="cell" id="cell-16">Город 17</div>
+                    <div class="cell" id="cell-15">Вокзал</div>
+                    <div class="cell" id="cell-14">Город 16</div>
+                    <div class="cell" id="cell-13">Город 15</div>
+                    <div class="cell" id="cell-12">Шанс</div>
+                    <div class="cell" id="cell-11">Город 14</div>
+                </div>
+
+                <div class="board-center">
+                    <h1>Эко Монополия</h1>
+                </div>
+
+                <div class="board-row right">
+                    <div class="cell" id="cell-31">Город 7</div>
+                    <div class="cell" id="cell-32">Город 8</div>
+                    <div class="cell" id="cell-33">Казна</div>
+                    <div class="cell" id="cell-34">Город 9</div>
+                    <div class="cell" id="cell-35">Вокзал</div>
+                    <div class="cell" id="cell-36">Шанс</div>
+                    <div class="cell" id="cell-37">Город 10</div>
+                    <div class="cell" id="cell-38">Налог</div>
+                    <div class="cell" id="cell-39">Город 11</div>
+                </div>
+            </div>
+
+            <div class="board-row bottom">
+                <div class="cell corner" id="cell-10">Тюрьма</div>
+                <div class="cell" id="cell-9">Город 13</div>
+                <div class="cell" id="cell-8">Город 12</div>
+                <div class="cell" id="cell-7">Шанс</div>
+                <div class="cell" id="cell-6">Вокзал</div>
+                <div class="cell" id="cell-5">Налог</div>
+                <div class="cell" id="cell-4">Город 11</div>
+                <div class="cell" id="cell-3">Казна</div>
+                <div class="cell" id="cell-2">Город 10</div>
+                <div class="cell" id="cell-1">Город 9</div>
+                <div class="cell corner" id="cell-0">Старт</div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

@@ -1,0 +1,200 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.main-container {
+    display: flex;
+    gap: 20px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.game-info {
+    width: 300px;
+    flex-shrink: 0;
+}
+
+.players-panel {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.player {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.player:last-child {
+    margin-bottom: 0;
+}
+
+.player-token {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 5px auto;
+}
+
+.dice-panel {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.dice {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: 2px solid #2c3e50;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+#rollDice {
+    width: 100%;
+    padding: 10px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#rollDice:hover {
+    background-color: #219a52;
+}
+
+#rollDice:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+.status-panel {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.board {
+    flex-grow: 1;
+    aspect-ratio: 1;
+    background-color: #e6ffe6;
+    border: 2px solid #2c3e50;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.board-row {
+    display: flex;
+    height: 80px;
+}
+
+.board-middle {
+    display: flex;
+    flex-grow: 1;
+}
+
+.board-row.left, .board-row.right {
+    flex-direction: column;
+    width: 80px;
+    height: auto;
+}
+
+.board-center {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-center h1 {
+    color: #2c3e50;
+    font-size: 2.5em;
+    text-align: center;
+    transform: rotate(-45deg);
+}
+
+.cell {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #2c3e50;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 5px;
+    font-size: 12px;
+    position: relative;
+}
+
+.cell.corner {
+    background-color: #ecf0f1;
+    font-weight: bold;
+}
+
+#cell-0 {
+    background-color: #27ae60;
+    color: white;
+}
+
+.player-piece {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: absolute;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+@media (max-width: 1000px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .game-info {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .board {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+} 
