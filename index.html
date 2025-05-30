@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Эко Монополия</title>
+    <title>Эко Вызов</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,12 +12,12 @@
             <div class="players-panel">
                 <div class="player player1">
                     <h3>Игрок 1</h3>
-                    <p>Деньги: <span class="money">1500</span>₽</p>
+                    <p>Деньги: <span id="player1-money">1500</span>₽</p>
                     <div class="player-token" style="background-color: #ff0000"></div>
                 </div>
                 <div class="player player2">
                     <h3>Игрок 2</h3>
-                    <p>Деньги: <span class="money">1500</span>₽</p>
+                    <p>Деньги: <span id="player2-money">1500</span>₽</p>
                     <div class="player-token" style="background-color: #0000ff"></div>
                 </div>
             </div>
@@ -34,64 +34,90 @@
 
         <div class="board">
             <div class="board-row top">
-                <div class="cell corner" id="cell-20">Парковка</div>
-                <div class="cell" id="cell-21">Город 1</div>
+                <div class="cell corner" id="cell-20">Экопарк</div>
+                <div class="cell" id="cell-21">Переработка</div>
                 <div class="cell" id="cell-22">Шанс</div>
-                <div class="cell" id="cell-23">Город 2</div>
-                <div class="cell" id="cell-24">Город 3</div>
-                <div class="cell" id="cell-25">Вокзал</div>
-                <div class="cell" id="cell-26">Город 4</div>
-                <div class="cell" id="cell-27">Город 5</div>
-                <div class="cell" id="cell-28">Вода</div>
-                <div class="cell" id="cell-29">Город 6</div>
-                <div class="cell corner" id="cell-30">Тюрьма</div>
+                <div class="cell" id="cell-23">Солнечная энергия</div>
+                <div class="cell" id="cell-24">Ветряк</div>
+                <div class="cell" id="cell-25">Экотранспорт</div>
+                <div class="cell" id="cell-26">Биосад</div>
+                <div class="cell" id="cell-27">Компост</div>
+                <div class="cell" id="cell-28">Чистая вода</div>
+                <div class="cell" id="cell-29">Лес</div>
+                <div class="cell corner" id="cell-30">Загрязнение</div>
             </div>
 
             <div class="board-middle">
                 <div class="board-row left">
-                    <div class="cell" id="cell-19">Город 19</div>
-                    <div class="cell" id="cell-18">Город 18</div>
-                    <div class="cell" id="cell-17">Казна</div>
-                    <div class="cell" id="cell-16">Город 17</div>
-                    <div class="cell" id="cell-15">Вокзал</div>
-                    <div class="cell" id="cell-14">Город 16</div>
-                    <div class="cell" id="cell-13">Город 15</div>
+                    <div class="cell" id="cell-19">Сортировка</div>
+                    <div class="cell" id="cell-18">Велосипед</div>
+                    <div class="cell" id="cell-17">Эко-бонус</div>
+                    <div class="cell" id="cell-16">Солнечная панель</div>
+                    <div class="cell" id="cell-15">Электробус</div>
+                    <div class="cell" id="cell-14">Огород</div>
+                    <div class="cell" id="cell-13">Ноль отходов</div>
                     <div class="cell" id="cell-12">Шанс</div>
-                    <div class="cell" id="cell-11">Город 14</div>
+                    <div class="cell" id="cell-11">Экорайон</div>
                 </div>
 
                 <div class="board-center">
-                    <h1>Эко Монополия</h1>
+                    <h1>Эко Вызов</h1>
                 </div>
 
                 <div class="board-row right">
-                    <div class="cell" id="cell-31">Город 7</div>
-                    <div class="cell" id="cell-32">Город 8</div>
-                    <div class="cell" id="cell-33">Казна</div>
-                    <div class="cell" id="cell-34">Город 9</div>
-                    <div class="cell" id="cell-35">Вокзал</div>
+                    <div class="cell" id="cell-31">Биосфера</div>
+                    <div class="cell" id="cell-32">Пасека</div>
+                    <div class="cell" id="cell-33">Эко-бонус</div>
+                    <div class="cell" id="cell-34">Биоферма</div>
+                    <div class="cell" id="cell-35">Поезд</div>
                     <div class="cell" id="cell-36">Шанс</div>
-                    <div class="cell" id="cell-37">Город 10</div>
-                    <div class="cell" id="cell-38">Налог</div>
-                    <div class="cell" id="cell-39">Город 11</div>
+                    <div class="cell" id="cell-37">Экомагазин</div>
+                    <div class="cell" id="cell-38">Углеродный налог</div>
+                    <div class="cell" id="cell-39">Заповедник</div>
                 </div>
             </div>
 
             <div class="board-row bottom">
-                <div class="cell corner" id="cell-10">Тюрьма</div>
-                <div class="cell" id="cell-9">Город 13</div>
-                <div class="cell" id="cell-8">Город 12</div>
+                <div class="cell corner" id="cell-10">Загрязнение</div>
+                <div class="cell" id="cell-9">Экостанция</div>
+                <div class="cell" id="cell-8">Биорынок</div>
                 <div class="cell" id="cell-7">Шанс</div>
-                <div class="cell" id="cell-6">Вокзал</div>
-                <div class="cell" id="cell-5">Налог</div>
-                <div class="cell" id="cell-4">Город 11</div>
-                <div class="cell" id="cell-3">Казна</div>
-                <div class="cell" id="cell-2">Город 10</div>
-                <div class="cell" id="cell-1">Город 9</div>
+                <div class="cell" id="cell-6">Трамвай</div>
+                <div class="cell" id="cell-5">Штраф</div>
+                <div class="cell" id="cell-4">Центр переработки</div>
+                <div class="cell" id="cell-3">Эко-бонус</div>
+                <div class="cell" id="cell-2">Общий сад</div>
+                <div class="cell" id="cell-1">Переработка</div>
                 <div class="cell corner" id="cell-0">Старт</div>
             </div>
         </div>
     </div>
+
+    <!-- Модальное окно для информации о клетке -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title">Информация о клетке</h2>
+            <p id="modal-description"></p>
+        </div>
+    </div>
+
+    <!-- Модальное окно результатов хода -->
+    <div id="turnModal" class="turn-modal">
+        <div class="turn-modal-content">
+            <h2 id="turnPlayerName" style="font-size: 36px; margin-bottom: 30px;">Ход игрока</h2>
+            <div class="dice-result">
+                <div class="big-dice" id="turnDice1">1</div>
+                <div class="big-dice" id="turnDice2">1</div>
+            </div>
+            <div class="turn-result" id="turnResult">
+                Вы переместились на клетку: <span id="turnCell"></span>
+            </div>
+            <div class="money-change" id="turnMoneyChange"></div>
+            <button class="continue-button" id="continueTurn">Продолжить</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html> 
