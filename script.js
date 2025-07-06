@@ -204,36 +204,54 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Получение координат для позиции игрока
-    function getPlayerPositionInCell(playerIndex, totalPlayers) {
-        const radius = 15;
-        const angle = (2 * Math.PI * playerIndex) / totalPlayers;
-        return {
-            x: Math.cos(angle) * radius,
-            y: Math.sin(angle) * radius
-        };
+    // --- ORDRE LOGIQUE DES CASES POUR LE PARCOURS DU PLATEAU ---
+    // Commence par START (0), puis va à gauche sur la rangée du bas, puis monte à gauche, puis à droite sur le haut, puis descend à droite
+    const cellOrder = [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, // bas droite -> bas gauche
+        11, 12, 13, 14, 15, 16, 17, 18, 19, 20, // gauche bas -> gauche haut
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, // haut gauche -> haut droite
+        31, 32, 33, 34, 35, 36, 37, 38, 39 // droite haut -> droite bas
+    ];
+
+    // --- MODIFICATION DE LA FONCTION D'ANIMATION ---
+    async function animatePlayerMovement(playerIndex, startPosition, endPosition) {
+        const player = gameState.players[playerIndex];
+        const piece = document.getElementById(`player${playerIndex + 1}-piece`);
+        if (!piece) return;
+        const boardRect = board.getBoundingClientRect();
+        const totalCells = cellOrder.length;
+        let steps = (endPosition - startPosition + totalCells) % totalCells;
+        for (let s = 1; s <= steps; s++) {
+            const logicalPos = (startPosition + s) % totalCells;
+            const cellId = `cell-${cellOrder[logicalPos]}`;
+            const cell = document.getElementById(cellId);
+            if (!cell) continue;
+            const cellRect = cell.getBoundingClientRect();
+            const centerX = cellRect.left - boardRect.left + (cellRect.width / 2) - (piece.offsetWidth / 2);
+            const centerY = cellRect.top - boardRect.top + (cellRect.height / 2) - (piece.offsetHeight / 2);
+            piece.style.transition = 'all 0.3s cubic-bezier(.4,2,.6,1)';
+            piece.style.left = `${centerX}px`;
+            piece.style.top = `${centerY}px`;
+            await new Promise(resolve => setTimeout(resolve, 300));
+        }
     }
 
-    // Обновление позиции фишки игрока
+    // --- MODIFICATION DE LA POSITION DU JOUEUR ---
     function updatePlayerPosition(playerIndex) {
         const player = gameState.players[playerIndex];
         const piece = document.getElementById(`player${playerIndex + 1}-piece`);
-        const cell = document.getElementById(`cell-${player.position}`);
-
-        if (!cell) {
-            console.error('Клетка не найдена:', player.position);
-            return;
+        if (!piece) return;
+        const cellId = `cell-${cellOrder[player.position]}`;
+        const cell = document.getElementById(cellId);
+        if (cell) {
+            const cellRect = cell.getBoundingClientRect();
+            const boardRect = board.getBoundingClientRect();
+            const centerX = cellRect.left - boardRect.left + (cellRect.width / 2) - (piece.offsetWidth / 2);
+            const centerY = cellRect.top - boardRect.top + (cellRect.height / 2) - (piece.offsetHeight / 2);
+            piece.style.transition = 'all 0.5s ease-in-out';
+            piece.style.left = `${centerX}px`;
+            piece.style.top = `${centerY}px`;
         }
-
-        const cellRect = cell.getBoundingClientRect();
-        const boardRect = board.getBoundingClientRect();
-        const position = getPlayerPositionInCell(playerIndex, gameState.players.length);
-
-        const centerX = cellRect.left - boardRect.left + (cellRect.width / 2);
-        const centerY = cellRect.top - boardRect.top + (cellRect.height / 2);
-
-        piece.style.left = `${centerX + position.x - (piece.offsetWidth / 2)}px`;
-        piece.style.top = `${centerY + position.y - (piece.offsetHeight / 2)}px`;
     }
 
     // Анимация кубиков
@@ -269,44 +287,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Обработка хода игрока
+    // --- MODIFICATION DE LA LOGIQUE DE POSITION ---
+    // Dans handleTurn, la position logique du joueur doit être incrémentée modulo cellOrder.length
     async function handleTurn() {
         if (gameState.isAnimating) return;
-        
         gameState.isAnimating = true;
         rollButton.disabled = true;
-
         const player = gameState.players[gameState.currentPlayer];
         const oldMoney = player.money;
-        
+        const oldPosition = player.position;
         await animateDice();
-        
         gameState.lastRoll = [rollDice(), rollDice()];
         const totalRoll = gameState.lastRoll[0] + gameState.lastRoll[1];
-        
         diceElements[0].textContent = gameState.lastRoll[0];
         diceElements[1].textContent = gameState.lastRoll[1];
-        
-        // Обновление позиции
-        const oldPosition = player.position;
-        player.position = (player.position + totalRoll) % boardCases.length;
-        updatePlayerPosition(gameState.currentPlayer);
-        
-        // Применение эффектов клетки
-        const currentCase = boardCases[player.position];
+        // Nouvelle position logique
+        const newPosition = (player.position + totalRoll) % cellOrder.length;
+        await animatePlayerMovement(gameState.currentPlayer, player.position, newPosition);
+        player.position = newPosition;
+        // Effet de la case réelle
+        const currentCase = boardCases[cellOrder[player.position]];
         const actionResult = currentCase.action(player);
-        
-        // Обновление интерфейса
         lastActionElement.textContent = `${player.name} выбросил ${totalRoll}, попал на клетку ${currentCase.name}. ${actionResult}`;
-        
-        // Обновление денег
         updateMoneyDisplay();
-        
-        // Показ модального окна с результатами
         const moneyChange = player.money - oldMoney;
         showTurnResults(player, gameState.lastRoll, currentCase, moneyChange);
-        
-        // Переход хода
         gameState.currentPlayer = (gameState.currentPlayer + 1) % gameState.players.length;
         currentPlayerElement.textContent = gameState.players[gameState.currentPlayer].name;
     }

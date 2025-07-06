@@ -222,10 +222,16 @@ body {
     height: 20px;
     border-radius: 50%;
     position: absolute;
-    transition: all 0.5s ease;
     z-index: 10;
     border: 2px solid white;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.player-piece:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
 }
 
 @media (max-width: 1000px) {
