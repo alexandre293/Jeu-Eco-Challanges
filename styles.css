@@ -7,6 +7,11 @@
 body {
     min-height: 100vh;
     background-color: #f0f0f0;
+    background-image: url(img/bg.png);
+    background-repeat: no-repeat;
+    background-position:center;
+    background-size:cover;
+    
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
