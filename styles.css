@@ -125,7 +125,7 @@ body {
 
 .board {
     flex-grow: 1;
-    aspect-ratio: 1;
+    height: 75%;
     background-color: #e6ffe6;
     border: 2px solid #2c3e50;
     border-radius: 10px;
@@ -149,7 +149,7 @@ body {
 
 .board-row.left, .board-row.right {
     flex-direction: column;
-    width: 80px;
+    width: 110px;
     height: auto;
     display: flex;
     justify-content: space-evenly;
@@ -172,7 +172,7 @@ body {
 }
 
 .cell {
-    width: 80px;
+    width: 110px;
     height: 80px;
     border: 1px solid #2c3e50;
     background-color: white;
