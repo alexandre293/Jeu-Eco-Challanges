@@ -190,38 +190,6 @@ body {
     cursor: help;
 }
 
-/* Types de cases */
-.cell[id="cell-0"] { /* Départ */
-    background-color: #27ae60;
-    color: white;
-}
-
-.cell[id$="0"], .cell[id$="10"], .cell[id$="20"], .cell[id$="30"] { /* Coins */
-    background-color: #ecf0f1;
-    font-weight: bold;
-}
-
-/* Cases spéciales */
-.cell[id="cell-7"], .cell[id="cell-12"], .cell[id="cell-22"], .cell[id="cell-36"] { /* Chance */
-    background-color: #f1c40f;
-    color: #2c3e50;
-}
-
-.cell[id="cell-3"], .cell[id="cell-17"], .cell[id="cell-33"] { /* Bonus écolo */
-    background-color: #2ecc71;
-    color: white;
-}
-
-.cell[id="cell-5"], .cell[id="cell-38"] { /* Taxes */
-    background-color: #e74c3c;
-    color: white;
-}
-
-.cell[id="cell-6"], .cell[id="cell-15"], .cell[id="cell-25"], .cell[id="cell-35"] { /* Transport */
-    background-color: #3498db;
-    color: white;
-}
-
 .player-piece {
     width: 20px;
     height: 20px;
@@ -425,3 +393,54 @@ body {
         opacity: 1;
     }
 } 
+
+.green {
+    background-color: #196B24;
+}
+
+.dark-blue {
+    background-color:#002060 ;
+}
+.red {
+    background-color: #FE0000;
+}
+
+.light-green {
+    background-color: #92D050;
+}
+
+.light-blue {
+    background-color: #084F6A;
+}
+
+.brown {
+    background-color: #80350E;
+}
+
+.blue-blue {
+    background-color: #00B0F0;
+}
+
+.orange {
+    background-color: #E97132;
+}
+
+.white-blue {
+    background-color: #C1E5F5;
+}
+
+.purple {
+    background-color: #622A8D;
+}
+
+.pink {
+    background-color: #E59EDD;
+}
+
+.dark-orange {
+    background-color: #80350E;
+}
+
+.beige {
+    background-color: #F6C6AD;
+}
