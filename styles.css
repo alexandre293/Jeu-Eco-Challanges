@@ -11,20 +11,21 @@ body {
     background-repeat: no-repeat;
     background-position:center;
     background-size:cover;
-    
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
 }
 
 .main-container {
     display: flex;
     gap: 20px;
-    max-width: 1200px;
     width: 100%;
     height: 100vh;
+    padding: 20px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .game-info {
@@ -123,12 +124,28 @@ body {
     color: #2c3e50;
 }
 
+.board-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.title-label {
+    background-image: url(img/title.png);
+    height: 70px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: #156081;
+    border: 2px solid #2c3e50;
+    border-radius: 0 0 10px 10px;
+}
+
 .board {
-    flex-grow: 1;
-    height: 75%;
+    flex-grow: 0;
+    height: 55%;
     background-color: #e6ffe6;
     border: 2px solid #2c3e50;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0;
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -160,15 +177,29 @@ body {
 .board-center {
     flex-grow: 1;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+    background-color: #AEAEAE;
 }
 
-.board-center h1 {
-    color: #2c3e50;
-    font-size: 2.5em;
+.cards-column {
+    width: 30%;
+    height: 85%;
+    background-color: #92D050;
+    display: flex;
+    flex-direction: column
+}
+
+.cards-container {
+    background-color: #002060;
+    color: white;
+    font-size: 25px;
     text-align: center;
-    transform: rotate(-45deg);
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    font-weight: 500;
 }
 
 .cell {
@@ -184,6 +215,8 @@ body {
     font-size: 12px;
     position: relative;
     transition: background-color 0.3s;
+    color: white;
+    font-weight: 700;
 }
 
 .cell[id^="cell-"] {
@@ -286,6 +319,7 @@ body {
 .cell:hover {
     background-color: rgba(44, 62, 80, 0.1);
     cursor: pointer;
+    color: black;
 }
 
 /* Стили для модального окна результатов хода */
@@ -443,4 +477,28 @@ body {
 
 .beige {
     background-color: #F6C6AD;
+}
+
+#cell-0 {
+    font-size: 22px;
+}
+
+.special-cards-container {
+    background-color: #91CF50;
+    border: 2px solid black;
+    font-size: 24px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20%;
+    width: 70%;
+}
+
+.special-cards {
+    width: 15%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
