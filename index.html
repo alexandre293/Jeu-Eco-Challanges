@@ -8,126 +8,126 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="main-container">
-        <div class="game-info">
-            <div class="players-panel">
-                <div class="player player1">
-                    <h3>Игрок 1</h3>
-                    <p>Деньги: <span id="player1-money">1500</span>₽</p>
-                    <div class="player-token" style="background-color: #ff0000"></div>
-                </div>
-                <div class="player player2">
-                    <h3>Игрок 2</h3>
-                    <p>Деньги: <span id="player2-money">1500</span>₽</p>
-                    <div class="player-token" style="background-color: #0000ff"></div>
-                </div>
+<div class="main-container">
+    <div class="game-info">
+        <div class="players-panel">
+            <div class="player player1">
+                <h3>Игрок 1</h3>
+                <p>Деньги: <span id="player1-money">1500</span>₽</p>
+                <div class="player-token" style="background-color: #ff0000"></div>
             </div>
-            <div class="dice-panel">
-                <div class="dice" id="dice1">1</div>
-                <div class="dice" id="dice2">1</div>
-                <button id="rollDice">Бросить кубики</button>
-            </div>
-            <div class="status-panel">
-                <p>Ход игрока: <span id="currentPlayer">Игрок 1</span></p>
-                <p>Действие: <span id="lastAction">Игра началась</span></p>
+            <div class="player player2">
+                <h3>Игрок 2</h3>
+                <p>Деньги: <span id="player2-money">1500</span>₽</p>
+                <div class="player-token" style="background-color: #0000ff"></div>
             </div>
         </div>
-
-        <div class="board-container">
-            <div class="board">
-                <div class="board-row top">
-                    <div class="cell green" id="cell-0">Départ</div>
-                    <div class="cell dark-blue" id="cell-1">Case entreprise 🏢</div>
-                    <div class="cell red" id="cell-2">Affaire réduction des émissions 🌬️</div>
-                    <div class="cell light-green" id="cell-3">Case Spéciale 🎭</div>
-                    <div class="cell light-blue" id="cell-4">Case Manifestation 🪧</div>
-                    <div class="cell dark-blue" id="cell-5">Case entreprise 🏢</div>
-                    <div class="cell brown" id="cell-6">Case Prime Verte 💚</div>
-                    <div class="cell light-blue" id="cell-7">Case Manifestation 🪧</div>
-                </div>
-
-                <div class="board-middle">
-                    <div class="board-row left">
-                        <div class="cell beige" id="cell-23">Case du Maire 🏛️</div>
-                        <div class="cell blue-blue" id="cell-22">Case Pollution ☠️</div>
-                        <div class="cell light-blue" id="cell-21">Case Manifestation 🪧️</div>
-                        <div class="cell dark-orange" id="cell-20">Case Prime Verte 💚</div>
-                    </div>
-
-                    <div class="board-center">
-                        <div class="cards-left cards-column">
-                            <div class="cards-container">Entreprise Niveau 1</div>
-                            <div class="cards-container">Entreprise Niveau 2</div>
-                        </div>
-                        <div class="cards-right cards-column">
-                            <div class="cards-container">Entreprise Niveau 3</div>
-                            <div class="cards-container">Entreprise Niveau 4</div>
-                        </div>
-                    </div>
-
-                    <div class="board-row right">
-                        <div class="cell light-green" id="cell-8">Case Spéciale 🎭</div>
-                        <div class="cell blue-blue" id="cell-9">Case Pollution ☠️</div>
-                        <div class="cell dark-blue" id="cell-10">Case entreprise 🏢</div>
-                        <div class="cell orange" id="cell-11">Case Pénurie de Ressources 💡</div>
-                    </div>
-                </div>
-
-                <div class="board-row bottom">
-                    <div class="cell dark-blue" id="cell-19">Case entreprise 🏢</div>
-                    <div class="cell pink" id="cell-18">Case Partenariat Local 🤝</div>
-                    <div class="cell light-green" id="cell-17">Case Spéciale 🎭</div>
-                    <div class="cell dark-blue" id="cell-16">Case entreprise 🏢</div>
-                    <div class="cell light-green" id="cell-15">Case Spéciale 🎭</div>
-                    <div class="cell purple" id="cell-14">Case Prison 🚔</div>
-                    <div class="cell dark-blue" id="cell-13">Case entreprise 🏢</div>
-                    <div class="cell white-blue" id="cell-12">Case Recherche et Innovation 🔬</div>
-                </div>
-            </div>
-            <div class="title-label"></div>
+        <div class="dice-panel">
+            <div class="dice" id="dice1">1</div>
+            <div class="dice" id="dice2">1</div>
+            <button id="rollDice">Бросить кубики</button>
         </div>
-
-        <div class="special-cards">
-            <div class="special-cards-container" style="align-self: flex-end;">
-                Événement
-            </div>
-            <div class="special-cards-container" style="align-self: flex-start;">
-                Malus
-            </div>
-            <div class="special-cards-container" style="align-self: flex-end;">
-                Défis
-            </div>
-            <div class="special-cards-container" style="align-self: center;">
-                Bonus
-            </div>
+        <div class="status-panel">
+            <p>Ход игрока: <span id="currentPlayer">Игрок 1</span></p>
+            <p>Действие: <span id="lastAction">Игра началась</span></p>
         </div>
     </div>
 
-    <!-- Модальное окно для информации о клетке -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modal-title">Информация о клетке</h2>
-            <p id="modal-description"></p>
+    <div class="board-container">
+        <div class="board">
+            <div class="board-row top">
+                <div class="cell green" id="cell-0">Départ</div>
+                <div class="cell dark-blue" id="cell-1">Case entreprise 🏢</div>
+                <div class="cell red" id="cell-2">Affaire réduction des émissions 🌬️</div>
+                <div class="cell light-green" id="cell-3">Case Spéciale 🎭</div>
+                <div class="cell light-blue" id="cell-4">Case Manifestation 🪧</div>
+                <div class="cell dark-blue" id="cell-5">Case entreprise 🏢</div>
+                <div class="cell brown" id="cell-6">Case Prime Verte 💚</div>
+                <div class="cell light-blue" id="cell-7">Case Manifestation 🪧</div>
+            </div>
+
+            <div class="board-middle">
+                <div class="board-row left">
+                    <div class="cell beige" id="cell-23">Case du Maire 🏛️</div>
+                    <div class="cell blue-blue" id="cell-22">Case Pollution ☠️</div>
+                    <div class="cell light-blue" id="cell-21">Case Manifestation 🪧️</div>
+                    <div class="cell dark-orange" id="cell-20">Case Prime Verte 💚</div>
+                </div>
+
+                <div class="board-center">
+                    <div class="cards-left cards-column">
+                        <div class="cards-container">Entreprise Niveau 1</div>
+                        <div class="cards-container">Entreprise Niveau 2</div>
+                    </div>
+                    <div class="cards-right cards-column">
+                        <div class="cards-container">Entreprise Niveau 3</div>
+                        <div class="cards-container">Entreprise Niveau 4</div>
+                    </div>
+                </div>
+
+                <div class="board-row right">
+                    <div class="cell light-green" id="cell-8">Case Spéciale 🎭</div>
+                    <div class="cell blue-blue" id="cell-9">Case Pollution ☠️</div>
+                    <div class="cell dark-blue" id="cell-10">Case entreprise 🏢</div>
+                    <div class="cell orange" id="cell-11">Case Pénurie de Ressources 💡</div>
+                </div>
+            </div>
+
+            <div class="board-row bottom">
+                <div class="cell dark-blue" id="cell-19">Case entreprise 🏢</div>
+                <div class="cell pink" id="cell-18">Case Partenariat Local 🤝</div>
+                <div class="cell light-green" id="cell-17">Case Spéciale 🎭</div>
+                <div class="cell dark-blue" id="cell-16">Case entreprise 🏢</div>
+                <div class="cell light-green" id="cell-15">Case Spéciale 🎭</div>
+                <div class="cell purple" id="cell-14">Case Prison 🚔</div>
+                <div class="cell dark-blue" id="cell-13">Case entreprise 🏢</div>
+                <div class="cell white-blue" id="cell-12">Case Recherche et Innovation 🔬</div>
+            </div>
         </div>
+        <div class="title-label"></div>
     </div>
 
-    <!-- Модальное окно результатов хода -->
-    <div id="turnModal" class="turn-modal">
-        <div class="turn-modal-content">
-            <h2 id="turnPlayerName" style="font-size: 36px; margin-bottom: 30px;">Ход игрока</h2>
-            <div class="dice-result">
-                <div class="big-dice" id="turnDice1">1</div>
-                <div class="big-dice" id="turnDice2">1</div>
-            </div>
-            <div class="turn-result" id="turnResult">
-                Вы переместились на клетку: <span id="turnCell"></span>
-            </div>
-            <div class="money-change" id="turnMoneyChange"></div>
-            <button class="continue-button" id="continueTurn">Продолжить</button>
+    <div class="special-cards">
+        <div class="special-cards-container" style="align-self: flex-end;">
+            Événement
+        </div>
+        <div class="special-cards-container" style="align-self: flex-start;">
+            Malus
+        </div>
+        <div class="special-cards-container" style="align-self: flex-end;">
+            Défis
+        </div>
+        <div class="special-cards-container" style="align-self: center;">
+            Bonus
         </div>
     </div>
+</div>
 
-    <script src="script.js"></script>
+<!-- Модальное окно для информации о клетке -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-title">Информация о клетке</h2>
+        <p id="modal-description"></p>
+    </div>
+</div>
+
+<!-- Модальное окно результатов хода -->
+<div id="turnModal" class="turn-modal">
+    <div class="turn-modal-content">
+        <h2 id="turnPlayerName" style="font-size: 36px; margin-bottom: 30px;">Ход игрока</h2>
+        <div class="dice-result">
+            <div class="big-dice" id="turnDice1">1</div>
+            <div class="big-dice" id="turnDice2">1</div>
+        </div>
+        <div class="turn-result" id="turnResult">
+            Вы переместились на клетку: <span id="turnCell"></span>
+        </div>
+        <div class="money-change" id="turnMoneyChange"></div>
+        <button class="continue-button" id="continueTurn">Продолжить</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html> 

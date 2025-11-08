@@ -1,24 +1,144 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="forest">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="image/png" rel="icon" href="img/favicon.png">
-    <title>Éco-Challenge – Départ</title>
-    <link rel="stylesheet" href="start.css">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Éco‑Challenge ♻️ — Ultra Start (Saisons)</title>
+    <meta name="color-scheme" content="dark light"/>
+    <link rel="stylesheet" href="start.css"/>
+
 </head>
 <body>
-    <div class="main-container">
-        <div class="game-logo">
-            <img src="img/favicon.png" alt="Logo" class="logo-img">
-            Éco-Challenge
-        </div>
+<!-- FX canvas (feuilles / neige / pétales / sable) -->
+<canvas id="fx" aria-hidden="true"></canvas>
 
-        <div class="progress-bar">
-            <div class="progress-step active">1</div>
-            <div class="progress-step">2</div>
-            <div class="progress-step">3</div>
+<main class="main" role="main">
+    <!-- Toolbar (langue / thème / saison / son / règles) -->
+    <div class="toolbar">
+        <div class="group">
+            <select id="langSel" class="sel" aria-label="Langue">
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+                <option value="ru">Русский</option>
+            </select>
+            <select id="themeSel" class="sel" aria-label="Thème">
+                <option value="foret">🌲 Forêt</option>
+                <option value="menthe">🌿 Menthe</option>
+                <option value="sable">🏝️ Sable</option>
+            </select>
+            <select id="seasonSel" class="sel" aria-label="Saison">
+                <option value="printemps">🌸 Printemps</option>
+                <option value="ete">☀️ Été</option>
+                <option value="automne">🍂 Automne</option>
+                <option value="hiver">❄️ Hiver</option>
+            </select>
+            <label class="chk" title="Choisir automatiquement selon le mois">
+                <input type="checkbox" id="autoSeason"> Auto
+            </label>
+            <button class="mini-btn" id="soundToggle" type="button">🔊</button>
+        </div>
+        <button class="mini-btn" id="btnRulesQuick" type="button">📜 Règles</button>
+    </div>
+
+    <!-- Header avec éolienne SVG -->
+    <header class="head" aria-label="Logo Éco‑Challenge">
+        <svg class="logo-svg" viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2"/>
+            <rect x="48" y="42" width="4" height="36" rx="2" fill="#dcefe8"/>
+            <g transform="translate(50 42)">
+                <g style="transform-origin:0px 0px; animation:spin 2.6s linear infinite">
+                    <path d="M0,0 L36,-6 Q45,-5 44,0 Q45,5 36,6 Z" fill="#c9ffe9"/>
+                    <path d="M0,0 L-12,34 Q-16,42 -12,44 Q-8,42 -4,34 Z" fill="#a2f5da" transform="rotate(120)"/>
+                    <path d="M0,0 L-12,34 Q-16,42 -12,44 Q-8,42 -4,34 Z" fill="#85e7cc" transform="rotate(240)"/>
+                </g>
+            </g>
+        </svg>
+        <div class="logoWord" id="logoWord">ÉCO‑CHALLENGE</div>
+    </header>
+
+    <p class="tag" id="tagline">Clique sur <strong>Départ</strong> puis choisis joueurs, pseudos et robot ♻️</p>
+
+    <figure class="rules" id="rulesBlock">
+        <img src="img/reglement.png" alt="Aperçu du règlement" id="rulesImg" loading="lazy">
+    </figure>
+
+    <div class="row">
+        <button class="btn btn-start" id="btnStart" type="button">▶️ DÉPART</button>
+        <button class="btn" id="btnResume" type="button" style="display:none">⏯️ REPRENDRE</button>
+        <a id="fullRulesLink" class="btn" href="#" target="_blank" rel="noopener" style="display:none">🔗 Règlement
+            complet</a>
+    </div>
+
+    <div class="stepper" id="stepper" aria-hidden="true">
+        <div class="dot" id="d1"></div>
+        <div class="dot" id="d2"></div>
+        <div class="dot" id="d3"></div>
+    </div>
+    <div class="progress" id="progress">
+        <div class="bar" id="bar"></div>
+    </div>
+
+    <section class="wizard" id="wizard" aria-label="Configuration de la partie">
+        <!-- Step 1 -->
+        <div class="screen active" data-step="1">
+            <label for="players" id="lblPlayers">Combien de joueurs ?</label>
+            <select id="players" class="selIn" required>
+                <option value="1">1 joueur</option>
+                <option value="2">2 joueurs</option>
+                <option value="3">3 joueurs</option>
+                <option value="4">4 joueurs</option>
+            </select>
+            <div class="err" id="errPlayers">Sélectionne un nombre de joueurs.</div>
+            <div class="row">
+                <button class="btn" id="toStep2" type="button">Suivant →</button>
+            </div>
+        </div>
+        <!-- Step 2 -->
+        <div class="screen" data-step="2">
+            <div class="players-box" id="playersBox"></div>
+            <div class="err" id="errNames">Entre tous les pseudos pour continuer.</div>
+            <div class="row">
+                <button class="btn" id="back1" type="button">← Retour</button>
+                <button class="btn" id="toStep3" type="button">Suivant →</button>
+            </div>
+        </div>
+        <!-- Step 3 -->
+        <div class="screen" data-step="3">
+            <label for="bot" id="lblBot">Ajouter un robot ?</label>
+            <select id="bot" class="selIn">
+                <option value="none">Aucun robot</option>
+                <option value="facile">Robot — Facile</option>
+                <option value="moyen">Robot — Moyen</option>
+                <option value="difficile">Robot — Difficile</option>
+            </select>
+            <div class="row">
+                <button class="btn" id="back2" type="button">← Retour</button>
+                <button class="btn" id="launch" type="button">Lancer la partie ▶️</button>
+            </div>
+            <p class="footer-note" id="saveNote">Les paramètres sont mémorisés localement.</p>
+        </div>
+    </section>
+</main>
+
+<!-- Modal règles (garde en secours si pas de lien externe) -->
+<div class="modal" id="modal">
+    <div class="modal-card">
+        <h3 id="modalTitle">Règles en bref</h3>
+        <ul id="modalList">
+            <li>But : développer l’éco‑ville la plus vertueuse (🌱, ⭐, 💰).</li>
+            <li>Tour : pioche, action, gestion des ressources.</li>
+            <li>Cases spéciales : bonus/malus, entreprises, événements.</li>
+            <li>Le Maire a des bonus en bouclant un tour.</li>
+            <li>La Prison bloque sauf immunité du Maire.</li>
+            <li>Fin : plus d’impact éco + prestige = victoire.</li>
+        </ul>
+        <div class="row">
+            <button class="btn" id="modalClose" type="button">Fermer</button>
         </div>
     </div>
+</div>
+
+<script src="start.js"></script>
+
 </body>
 </html>

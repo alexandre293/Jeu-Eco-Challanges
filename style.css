@@ -9,8 +9,8 @@ body {
     background-color: #f0f0f0;
     background-image: url(img/bg.png);
     background-repeat: no-repeat;
-    background-position:center;
-    background-size:cover;
+    background-position: center;
+    background-size: cover;
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
@@ -170,7 +170,7 @@ body {
     height: auto;
     display: flex;
     justify-content: space-evenly;
-    
+
 
 }
 
@@ -426,15 +426,16 @@ body {
         transform: translateY(0);
         opacity: 1;
     }
-} 
+}
 
 .green {
     background-color: #196B24;
 }
 
 .dark-blue {
-    background-color:#002060 ;
+    background-color: #002060;
 }
+
 .red {
     background-color: #FE0000;
 }
