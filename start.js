@@ -332,7 +332,6 @@ const i18n = {
 function setLang(lang) {
     const t = i18n[lang] || i18n.fr;
     $('#btnStart').textContent = '▶️ ' + t.start;
-    $('#btnResume').textContent = '⏯️ ' + t.resume;
     $('#toStep2').textContent = t.next;
     $('#toStep3').textContent = t.next;
     $('#back1').textContent = t.back;
@@ -359,63 +358,6 @@ function detectSeasonByMonth(m) {
     return 'automne';
 }
 
-(() => {
-    const langSel = $('#langSel'), themeSel = $('#themeSel'), seasonSel = $('#seasonSel'), autoChk = $('#autoSeason');
-    const storedLang = localStorage.getItem('eco_lang') || navigator.language.slice(0, 2);
-    const lang = ['fr', 'en', 'ru'].includes(storedLang) ? storedLang : 'fr';
-    langSel.value = lang;
-    setLang(lang);
-    on(langSel, 'change', () => {
-        localStorage.setItem('eco_lang', langSel.value);
-        setLang(langSel.value);
-        beep();
-    });
-    const storedTheme = localStorage.getItem('eco_theme') || 'foret';
-    document.documentElement.setAttribute('data-theme', storedTheme);
-    themeSel.value = storedTheme;
-    on(themeSel, 'change', () => {
-        document.documentElement.setAttribute('data-theme', themeSel.value);
-        localStorage.setItem('eco_theme', themeSel.value);
-        beep();
-    });
-    const autoStored = localStorage.getItem('eco_autoSeason') === '1';
-    autoChk.checked = autoStored;
-    let season = localStorage.getItem('eco_season') || 'printemps';
-    if (autoStored) {
-        season = detectSeasonByMonth(new Date().getMonth());
-        seasonSel.disabled = true;
-    }
-    seasonSel.value = season;
-    document.body.setAttribute('data-season', season);
-    fx && fx.setMode(season);
-    setSeasonAudio(season);
-    on(seasonSel, 'change', () => {
-        const s = seasonSel.value;
-        localStorage.setItem('eco_season', s);
-        document.body.setAttribute('data-season', s);
-        fx && fx.setMode(s);
-        setSeasonAudio(s);
-        document.querySelector('.bg-grad').style.opacity = '0.95';
-        setTimeout(() => document.querySelector('.bg-grad').style.opacity = '0.9', 350);
-        beep();
-    });
-    on(autoChk, 'change', () => {
-        const en = autoChk.checked;
-        localStorage.setItem('eco_autoSeason', en ? '1' : '0');
-        seasonSel.disabled = en;
-        let s = seasonSel.value;
-        if (en) {
-            s = detectSeasonByMonth(new Date().getMonth());
-            seasonSel.value = s;
-            localStorage.setItem('eco_season', s);
-        }
-        document.body.setAttribute('data-season', s);
-        fx && fx.setMode(s);
-        setSeasonAudio(s);
-        beep();
-    });
-})();
-
 /* ======= RÈGLES ======= */
 const FULL_RULES_URL = ""; // ex: "https://alexandre293.github.io/Eco-jeux/reglement"
 if (FULL_RULES_URL) {
@@ -430,15 +372,6 @@ on($('#btnRulesQuick'), 'click', () => {
         $('#modal').classList.add('open');
     }
 });
-
-/* ======= RESUME ======= */
-(() => {
-    try {
-        const save = JSON.parse(localStorage.getItem(SAVE_KEY) || "null");
-        if (save) $('#btnResume').style.display = 'inline-flex';
-    } catch (e) {
-    }
-})();
 
 /* ======= WIZARD LOGIC ======= */
 const stepper = $('#stepper'), progress = $('#progress'), bar = $('#bar');
@@ -498,11 +431,6 @@ on($('#btnStart'), 'click', () => {
     beep();
 });
 
-on($('#btnResume'), 'click', () => {
-    beep();
-    alert('Reprise de la partie…');
-});
-
 on($('#toStep2'), 'click', () => {
     const players = parseInt($('#players').value, 10);
     if (!players || players < 1 || players > 4) {
@@ -552,16 +480,27 @@ on($('#launch'), 'click', () => {
         names.push(($('#pseudo' + i) || {}).value.trim());
     }
     const bot = $('#bot').value || 'none';
+
     try {
-        localStorage.setItem(SAVE_KEY, JSON.stringify({version: 7, players: n, names, bot, ts: Date.now()}));
-    } catch (e) {
-    }
+        localStorage.setItem(SAVE_KEY, JSON.stringify({
+            version: 7,
+            players: n,
+            names,
+            bot,
+            ts: Date.now()
+        }));
+    } catch (e) {}
+
     confetti();
     beep();
+
     setTimeout(() => {
         alert(`OK ! ${n} joueur(s) • ${names.join(', ')} • bot: ${bot}`);
+        // Redirection vers la page principale du jeu
+        window.location.href = "index.html";
     }, 350);
 });
+
 
 /* ======= MODAL close ======= */
 on($('#modalClose'), 'click', () => {
