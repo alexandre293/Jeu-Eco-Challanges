@@ -1,11 +1,40 @@
-// Инициализация игры
 document.addEventListener('DOMContentLoaded', () => {
+    const SAVE_KEY = 'eco_save_v7'; // ⚠️ то же значение, что и на стартовой странице
+
+    // Чтение сохранённых данных
+    let savedConfig = null;
+    try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (raw) {
+            savedConfig = JSON.parse(raw);
+        }
+    } catch (e) {
+        console.error('Ошибка при чтении localStorage', e);
+    }
+
+    // Количество игроков, имена, режим бота
+    const nbPlayers = savedConfig?.players ?? 2;
+    const savedNames = savedConfig?.names ?? [];
+    const botMode = savedConfig?.bot ?? 'none';
+
+    // Цвета фишек по умолчанию
+    const playerColors = ['#ff0000', '#0000ff', '#00aa00', '#ff00ff'];
+
+    // Динамическое создание массива игроков
+    const players = [];
+    for (let i = 0; i < nbPlayers; i++) {
+        players.push({
+            name: savedNames[i] && savedNames[i].trim() !== '' ? savedNames[i].trim() : `Joueur ${i + 1}`,
+            position: 0,
+            money: 1500,
+            color: playerColors[i % playerColors.length]
+        });
+    }
+
     // Состояние игры
     const gameState = {
-        players: [
-            {name: 'Игрок 1', position: 0, money: 1500, color: '#ff0000'},
-            {name: 'Игрок 2', position: 0, money: 1500, color: '#0000ff'}
-        ],
+        players,
+        botMode, // если потом захочешь использовать бота
         currentPlayer: 0,
         lastRoll: [1, 1],
         isAnimating: false
@@ -308,6 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentPlayerElement = document.getElementById('currentPlayer');
     const lastActionElement = document.getElementById('lastAction');
     const board = document.querySelector('.board');
+    const playersPanel = document.getElementById('playersPanel');
 
     // Модальное окно для информации о клетке
     const modal = document.getElementById('modal');
@@ -342,6 +372,20 @@ document.addEventListener('DOMContentLoaded', () => {
         gameState.isAnimating = false;
         rollButton.disabled = false;
     };
+
+    function renderPlayersPanel() {
+        playersPanel.innerHTML = '';
+        gameState.players.forEach((player, index) => {
+            const playerDiv = document.createElement('div');
+            playerDiv.className = `player player${index + 1}`;
+            playerDiv.innerHTML = `
+            <h3>${player.name}</h3>
+            <p>Деньги: <span id="player${index + 1}-money">${player.money}</span>₽</p>
+            <div class="player-token" style="background-color: ${player.color}"></div>
+        `;
+            playersPanel.appendChild(playerDiv);
+        });
+    }
 
     // Показать результаты хода
     function showTurnResults(player, diceResults, cell, moneyChange) {
@@ -517,6 +561,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Инициализация игры
     function initGame() {
+        renderPlayersPanel();
         createPlayerPieces();
         updateMoneyDisplay();
         rollButton.addEventListener('click', handleTurn);
