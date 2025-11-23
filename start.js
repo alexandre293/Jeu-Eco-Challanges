@@ -359,7 +359,7 @@ function detectSeasonByMonth(m) {
 }
 
 (() => {
-    const langSel = $('#langSel'), seasonSel = $('#seasonSel'), autoChk = $('#autoSeason');
+    const langSel = $('#langSel'), seasonSel = $('#seasonSel');
     const storedLang = localStorage.getItem('eco_lang') || navigator.language.slice(0, 2);
     const lang = ['fr', 'en', 'ru'].includes(storedLang) ? storedLang : 'fr';
     langSel.value = lang;
@@ -369,15 +369,7 @@ function detectSeasonByMonth(m) {
         setLang(langSel.value);
         beep();
     });
-    const storedTheme = localStorage.getItem('eco_theme') || 'foret';
-    document.documentElement.setAttribute('data-theme', storedTheme);
-    const autoStored = localStorage.getItem('eco_autoSeason') === '1';
-    autoChk.checked = autoStored;
     let season = localStorage.getItem('eco_season') || 'printemps';
-    if (autoStored) {
-        season = detectSeasonByMonth(new Date().getMonth());
-        seasonSel.disabled = true;
-    }
     seasonSel.value = season;
     document.body.setAttribute('data-season', season);
     fx && fx.setMode(season);
@@ -392,23 +384,7 @@ function detectSeasonByMonth(m) {
         setTimeout(() => document.querySelector('.bg-grad').style.opacity = '0.9', 350);
         beep();
     });
-    on(autoChk, 'change', () => {
-        const en = autoChk.checked;
-        localStorage.setItem('eco_autoSeason', en ? '1' : '0');
-        seasonSel.disabled = en;
-        let s = seasonSel.value;
-        if (en) {
-            s = detectSeasonByMonth(new Date().getMonth());
-            seasonSel.value = s;
-            localStorage.setItem('eco_season', s);
-        }
-        document.body.setAttribute('data-season', s);
-        fx && fx.setMode(s);
-        setSeasonAudio(s);
-        beep();
-    });
 })();
-
 
 /* ======= RÈGLES ======= */
 const FULL_RULES_URL = ""; // ex: "https://alexandre293.github.io/Eco-jeux/reglement"
