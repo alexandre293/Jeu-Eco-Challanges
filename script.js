@@ -470,23 +470,75 @@ document.addEventListener('DOMContentLoaded', () => {
             await new Promise(resolve => setTimeout(resolve, 300));
         }
     }
-
-    // --- MODIFICATION DE LA POSITION DU JOUEUR ---
     function updatePlayerPosition(playerIndex) {
         const player = gameState.players[playerIndex];
         const piece = document.getElementById(`player${playerIndex + 1}-piece`);
         if (!piece) return;
-        const cellId = `cell-${cellOrder[player.position]}`;
+
+        // Логическая позиция (0..cellOrder.length-1)
+        const logicalPos = player.position;
+        const cellId = `cell-${cellOrder[logicalPos]}`;
         const cell = document.getElementById(cellId);
-        if (cell) {
-            const cellRect = cell.getBoundingClientRect();
-            const boardRect = board.getBoundingClientRect();
-            const centerX = cellRect.left - boardRect.left + (cellRect.width / 2) - (piece.offsetWidth / 2);
-            const centerY = cellRect.top - boardRect.top + (cellRect.height / 2) - (piece.offsetHeight / 2);
-            piece.style.transition = 'all 0.5s ease-in-out';
-            piece.style.left = `${centerX}px`;
-            piece.style.top = `${centerY}px`;
+        if (!cell) return;
+
+        const cellRect = cell.getBoundingClientRect();
+        const boardRect = board.getBoundingClientRect();
+
+        // Центр клетки
+        const centerX = cellRect.left - boardRect.left + (cellRect.width / 2) - (piece.offsetWidth / 2);
+        const centerY = cellRect.top - boardRect.top + (cellRect.height / 2) - (piece.offsetHeight / 2);
+
+        // --- ВАЖНО: считаем, сколько игроков на этой же клетке ---
+        const playersOnSameCell = gameState.players
+            .map((p, idx) => ({ p, idx }))
+            .filter(obj => obj.p.position === player.position);
+
+        const count = playersOnSameCell.length;
+
+        let offsetX = 0;
+        let offsetY = 0;
+        const gap = 12; // расстояние между фишками в пикселях
+
+        if (count > 1) {
+            // Какой по счёту этот игрок на клетке
+            const indexInCell = playersOnSameCell.findIndex(obj => obj.idx === playerIndex);
+
+            if (count === 2) {
+                // Два игрока: один чуть влево, другой чуть вправо
+                offsetX = indexInCell === 0 ? -gap : gap;
+                offsetY = 0;
+            } else if (count === 3) {
+                // Три игрока: треугольник
+                const offsets = [
+                    { x: -gap, y: -gap },
+                    { x: +gap, y: -gap },
+                    { x: 0,    y: +gap }
+                ];
+                offsetX = offsets[indexInCell].x;
+                offsetY = offsets[indexInCell].y;
+            } else {
+                // 4 и больше: квадрат 2x2 вокруг центра
+                const offsets = [
+                    { x: -gap, y: -gap },
+                    { x: +gap, y: -gap },
+                    { x: -gap, y: +gap },
+                    { x: +gap, y: +gap }
+                ];
+                const pos = offsets[indexInCell % 4];
+                offsetX = pos.x;
+                offsetY = pos.y;
+            }
         }
+
+        piece.style.transition = 'all 0.5s ease-in-out';
+        piece.style.left = `${centerX + offsetX}px`;
+        piece.style.top = `${centerY + offsetY}px`;
+    }
+
+    function updateAllPlayerPositions() {
+        gameState.players.forEach((_, index) => {
+            updatePlayerPosition(index);
+        });
     }
 
     // Анимация кубиков
@@ -546,6 +598,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lastActionElement.textContent = `${player.name} выбросил ${totalRoll}, попал на клетку ${currentCase.name}. ${actionResult}`;
         updateMoneyDisplay();
         const moneyChange = player.money - oldMoney;
+        updateAllPlayerPositions();
         showTurnResults(player, gameState.lastRoll, currentCase, moneyChange);
         gameState.currentPlayer = (gameState.currentPlayer + 1) % gameState.players.length;
         currentPlayerElement.textContent = gameState.players[gameState.currentPlayer].name;
