@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
         currentPlayer: 0,
         lastRoll: [1, 1],
         isAnimating: false,
-        mayorIndex: null
+        mayorIndex: null,
+        pendingSpecialDraw: false
     };
 
     // ===== 4) Plateau (24 cases, conforme à ton HTML) =====
@@ -79,6 +80,47 @@ document.addEventListener('DOMContentLoaded', () => {
         22:"Pollution ☠️ : +1 ⭐ si entreprise anti-pollution.",
         23:"Case du Maire 🏛️ : le premier à faire un tour complet devient Maire (bonus + immunité prison)."
     };
+
+    function clearCardHighlights() {
+        ['card-event', 'card-malus', 'card-defis', 'card-bonus'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('card-highlight');
+        });
+    }
+
+    function flashElement(el, times = 2, duration = 180) {
+        return new Promise(resolve => {
+            let count = 0;
+            const interval = setInterval(() => {
+                el.classList.toggle('card-highlight');
+                count++;
+                if (count >= times * 2) { // on/off = 2 par flash
+                    clearInterval(interval);
+                    el.classList.remove('card-highlight');
+                    resolve();
+                }
+            }, duration);
+        });
+    }
+
+    async function drawSpecialCard() {
+        const d = Math.floor(Math.random() * 4) + 1;
+
+        let chosenId = '';
+        let chosenName = '';
+
+        if (d === 1) { chosenId = 'card-event'; chosenName = 'Événement'; }
+        if (d === 2) { chosenId = 'card-malus'; chosenName = 'Malus'; }
+        if (d === 3) { chosenId = 'card-defis'; chosenName = 'Défis'; }
+        if (d === 4) { chosenId = 'card-bonus'; chosenName = 'Bonus'; }
+
+        const el = document.getElementById(chosenId);
+        if (el) {
+            await flashElement(el, 2, 180); // 2 flash rapides
+        }
+
+        return { d, chosenName };
+    }
 
     // ===== 6) Effets des cases (FR, règlement) =====
     function applyManifestation(player) {
@@ -139,21 +181,37 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 0,  name: "Départ", action: (p) => "Départ." },
         { id: 1,  name: "Case entreprise 🏢", action: (p) => "Entreprise : achat/gestion (à coder)." },
         { id: 2,  name: "Réduction des émissions 🌬️", action: (p) => { p.eco += 3; p.stars += 2; return "Réduction des émissions : +3 🌱, +2 ⭐."; } },
-        { id: 3,  name: "Case Spéciale 🎭", action: (p) => "Case Spéciale : tire une carte (à coder)." },
+        { id: 3,  name: "Case Spéciale 🎭", action: (p) => {
+                gameState.pendingSpecialDraw = true;
+                return "Case Spéciale 🎭 : нажми «Continuer», чтобы вытянуть карту.";
+            }
+       },
         { id: 4,  name: "Case Manifestation 🪧", action: (p) => applyManifestation(p) },
         { id: 5,  name: "Case entreprise 🏢", action: (p) => "Entreprise : achat/gestion (à coder)." },
         { id: 6,  name: "Case Prime Verte 💚", action: (p) => { p.eco += 3; p.stars += 2; return "Prime Verte : +3 🌱, +2 ⭐."; } },
         { id: 7,  name: "Case Manifestation 🪧", action: (p) => applyManifestation(p) },
-        { id: 8,  name: "Case Spéciale 🎭", action: (p) => "Case Spéciale : tire une carte (à coder)." },
+        { id: 8,  name: "Case Spéciale 🎭", action: (p) => {
+                gameState.pendingSpecialDraw = true;
+                return "Case Spéciale 🎭 : нажми «Continuer», чтобы вытянуть карту.";
+            }
+        },
         { id: 9,  name: "Case Pollution ☠️", action: (p) => applyPollution(p) },
         { id: 10, name: "Case entreprise 🏢", action: (p) => "Entreprise : achat/gestion (à coder)." },
         { id: 11, name: "Case Pénurie de Ressources 💡", action: (p) => { p.money -= 2; p.eco += 1; return "Pénurie : −2 💰, +1 🌱."; } },
         { id: 12, name: "Case Recherche et Innovation 🔬", action: (p) => applyInnovation(p) },
         { id: 13, name: "Case entreprise 🏢", action: (p) => "Entreprise : achat/gestion (à coder)." },
         { id: 14, name: "Case Prison 🚔", action: (p) => applyPrison(p) },
-        { id: 15, name: "Case Spéciale 🎭", action: (p) => "Case Spéciale : tire une carte (à coder)." },
+        { id: 15, name: "Case Spéciale 🎭", action: (p) => {
+                gameState.pendingSpecialDraw = true;
+                return "Case Spéciale 🎭 : нажми «Continuer», чтобы вытянуть карту.";
+            }
+        },
         { id: 16, name: "Case entreprise 🏢", action: (p) => "Entreprise : achat/gestion (à coder)." },
-        { id: 17, name: "Case Spéciale 🎭", action: (p) => "Case Spéciale : tire une carte (à coder)." },
+        { id: 17, name: "Case Spéciale 🎭", action: (p) => {
+                gameState.pendingSpecialDraw = true;
+                return "Case Spéciale 🎭 : нажми «Continuer», чтобы вытянуть карту.";
+            }
+        },
         { id: 18, name: "Case Partenariat Local 🤝", action: (p) => { p.eco += 2; p.stars += 1; return "Partenariat Local : +2 🌱, +1 ⭐."; } },
         { id: 19, name: "Case entreprise 🏢", action: (p) => "Entreprise : achat/gestion (à coder)." },
         { id: 20, name: "Case Prime Verte 💚", action: (p) => { p.eco += 3; p.stars += 2; return "Prime Verte : +3 🌱, +2 ⭐."; } },
@@ -214,7 +272,17 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal.onclick = () => (modal.style.display = "none");
     window.onclick = (event) => { if (event.target === modal) modal.style.display = "none"; };
 
-    continueTurn.onclick = () => {
+    continueTurn.onclick = async () => {
+        // Si une case spéciale est en attente, on tire la carte APRÈS "Continuer"
+        if (gameState.pendingSpecialDraw) {
+            gameState.pendingSpecialDraw = false;
+
+            const result = await drawSpecialCard();
+
+            // Affiche le résultat proprement (sans alert)
+            lastActionElement.textContent += ` | Carte tirée : ${result.chosenName}`;
+        }
+
         turnModal.style.display = "none";
         gameState.isAnimating = false;
         rollButton.disabled = false;
